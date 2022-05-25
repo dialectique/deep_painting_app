@@ -2,7 +2,7 @@
 import numpy as np
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 
-def charge_and_divide_dataset(path="", validation_split=0.2, batch_size=1, img_height = 180, img_width = 180):
+def load_and_divide_dataset(path="", validation_split=0.2, batch_size=1, img_height = 180, img_width = 180):
     """
     Charge the dataset from the specified path (by default: current path)
     The database must be divided into folders (one folder per class).

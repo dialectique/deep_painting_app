@@ -1,6 +1,6 @@
 import math
 import matplotlib.pyplot as plt
-from deep_painting_app.data_processing import charge_and_divide_dataset, classes_names_to_dict, give_class_name
+from deep_painting_app.data_processing import load_and_divide_dataset, classes_names_to_dict, give_class_name
 
 
 def display_paintings_and_classes(dataset, n=1):
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     img_width=180
     batch_size=1
     validation_split=0.2
-    train_ds, test_ds = charge_and_divide_dataset(
+    train_ds, test_ds = load_and_divide_dataset(
         path=path,
         img_height=img_height,
         img_width=img_width,

@@ -98,7 +98,7 @@ if __name__ == '__main__':
     img_width=180
     batch_size=1
     validation_split=0.2
-    train_ds, test_ds = charge_and_divide_dataset(
+    train_ds, test_ds = load_and_divide_dataset(
         path=path,
         img_height=img_height,
         img_width=img_width,

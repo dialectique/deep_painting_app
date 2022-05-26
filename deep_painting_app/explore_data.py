@@ -1,6 +1,8 @@
 import math
+import random
 import matplotlib.pyplot as plt
 from deep_painting_app.data_processing import load_and_divide_dataset, classes_names_to_dict, give_class_name
+from tensorflow.keras.preprocessing import image_dataset_from_directory
 
 
 def display_paintings_and_classes(dataset, n=1):
@@ -47,17 +49,92 @@ def display_paintings_and_classes(dataset, n=1):
     plt.show()
 
 
+def random_painting(path, img_height=180, img_width=180):
+    """
+    return a tuple from a dataset of images: a random image(numpy ndarray) and its class(string)
+    The database must be divided into folders (one folder per class).
+    arguments:
+    * path: path of the dataset (by default: current path)
+    * image size: img_height and img_width. By default 180 for both
+    """
+
+    # raise an error if path is not a string
+    if not type(path) is str:
+        raise TypeError("path must be a string")
+
+    # random seed value for image_dataset_from_directory
+    random.seed()
+    seed = random.randint(0,100)
+
+    # load dataset from path
+    dataset = image_dataset_from_directory(
+        path,
+        labels='inferred',
+        label_mode='categorical',
+        shuffle = True,
+        seed = seed,
+        image_size = (img_height, img_width),
+        color_mode='rgb',
+        batch_size=1)
+
+    #iterates through dataset, set one painting and its class, randomly stop
+    class_names_dict = classes_names_to_dict(dataset)
+    for x, y in dataset.as_numpy_iterator():
+        painting, painting_class = x[0], give_class_name(y[0], class_names_dict)
+        if random.randint(0,1000) > 700:
+            break
+
+    return painting, painting_class
+
+def number_img_per_class(path):
+    """
+    return a dictionnary (keys: class - values: number of images)
+    argument: path of the dataset (by default: current path)
+    The database must be divided into folders (one folder per class)
+    """
+
+    # load dataset from path
+    dataset = image_dataset_from_directory(
+        path,
+        labels='inferred',
+        label_mode='categorical',
+        batch_size=1)
+
+    # set a dictionnary with the classes of the dataset
+    nb_img_per_class = {c: 0 for c in dataset.class_names}
+
+    # iterating the dataset and count images for each class
+    class_names_dict = classes_names_to_dict(dataset)
+    for x, y in dataset.as_numpy_iterator():
+        nb_img_per_class[give_class_name(y[0], class_names_dict)] += 1
+
+    return nb_img_per_class
+
+
 if __name__ == '__main__':
+
+    #testing
     path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
-    img_height=180
-    img_width=180
-    batch_size=1
-    validation_split=0.2
-    train_ds, test_ds = load_and_divide_dataset(
-        path=path,
-        img_height=img_height,
-        img_width=img_width,
-        batch_size=batch_size,
-        validation_split=validation_split)
-    class_names_dict = classes_names_to_dict(train_ds)
-    display_paintings_and_classes(test_ds, n=10)
+    print(number_img_per_class(path))
+
+    #Uncomment for testing random_painting
+    #path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
+    #img_height=180
+    #img_width=180
+    #painting, painting_class = random_painting(path)
+    #plt.imshow(painting/255)
+    #plt.title(painting_class)
+    #plt.show()
+
+    #Uncomment for testing display_paintings_and_classes
+    #path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
+    #batch_size=1
+    #validation_split=0.2
+    #train_ds, test_ds = load_and_divide_dataset(
+    #    path=path,
+    #    img_height=img_height,
+    #    img_width=img_width,
+    #    batch_size=batch_size,
+    #    validation_split=validation_split)
+    #class_names_dict = classes_names_to_dict(train_ds)
+    #display_paintings_and_classes(test_ds, n=10)

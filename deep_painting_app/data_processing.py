@@ -1,8 +1,9 @@
 
+import random
 import numpy as np
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 
-def load_and_divide_dataset(path="", validation_split=0.2, batch_size=1, img_height = 180, img_width = 180):
+def load_and_divide_dataset(path="", validation_split=0.2, batch_size=1, img_height=180, img_width=180):
     """
     Charge the dataset from the specified path (by default: current path)
     The database must be divided into folders (one folder per class).
@@ -35,6 +36,9 @@ def load_and_divide_dataset(path="", validation_split=0.2, batch_size=1, img_hei
     if not type(img_width) is int or img_width <= 0:
         raise TypeError("img_width must be a positive integer")
 
+    random.seed()
+    seed = random.randint(0,100)
+
     dataset_train = image_dataset_from_directory(
         path,
         validation_split = validation_split,
@@ -42,7 +46,7 @@ def load_and_divide_dataset(path="", validation_split=0.2, batch_size=1, img_hei
         subset='training',
         label_mode='categorical',
         shuffle = True,
-        seed = 0,
+        seed = seed,
         image_size = (img_height, img_width),
         color_mode='rgb',
         batch_size=batch_size)
@@ -54,7 +58,7 @@ def load_and_divide_dataset(path="", validation_split=0.2, batch_size=1, img_hei
         subset='validation',
         label_mode='categorical',
         shuffle = True,
-        seed = 1,
+        seed = seed,
         image_size = (img_height, img_width),
         color_mode='rgb',
         batch_size=batch_size)

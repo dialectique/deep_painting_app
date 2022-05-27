@@ -1,8 +1,14 @@
 # Data analysis
 - Document here the project: deep_painting_app
-- Description: Project Description
+- Description: App which can predict the artistic movement of portrait paintings
 - Data Source:
-- Type of analysis:
+  Portrait Painting Dataset For Different Movements
+  Published: 14 January 2021
+  By Jiaqi Yang
+  Primary data source of this dataset from WikiArt
+  https://data.mendeley.com/datasets/289kxpnp57/1
+
+- Type of analysis: convolutional neural network classification
 
 Please document the project the better you can.
 
@@ -72,3 +78,25 @@ mkdir tmp
 cd tmp
 deep_painting_app-run
 ```
+
+```package
+pip install -e deep_painting_app
+```
+
+Package composition:
+depp_painting_app
+  api
+    index
+    predict_movement
+    predict
+  data_processing
+    load_and_divide_dataset
+    classes_names_to_dict
+    give_class_name
+  explore_data
+    display_paintings_and_classes
+    random_painting
+    number_img_per_class
+  model
+    initialize_baseline_model
+    baseline_model_pipeline

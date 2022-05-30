@@ -73,6 +73,6 @@ def baseline_model_pipeline(path="", validation_split=0.2, batch_size=1, img_hei
 
 
 if __name__ == '__main__':
-    path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
+    path = "../raw_data/Mendeley_Dataset/orgImg"
     model = baseline_model_pipeline(path)
     print(type(model))

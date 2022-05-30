@@ -97,7 +97,7 @@ def give_class_name(vector, class_names_dict):
 
 
 if __name__ == '__main__':
-    path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
+    path = "../raw_data/Mendeley_Dataset/orgImg"
     img_height=180
     img_width=180
     batch_size=1

@@ -114,7 +114,7 @@ def number_img_per_class(path):
 if __name__ == '__main__':
 
     #testing number_img_per_class
-    path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
+    path = "../raw_data/Mendeley_Dataset/orgImg"
     print(number_img_per_class(path))
 
     #Uncomment for testing random_painting

@@ -97,6 +97,7 @@ depp_painting_app
     display_paintings_and_classes
     random_painting
     number_img_per_class
+    pick_up_one_painting_per_class
   model
     initialize_baseline_model
     baseline_model_pipeline

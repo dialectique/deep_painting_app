@@ -93,7 +93,7 @@ def number_img_per_class(path):
     The database must be divided into folders (one folder per class)
     """
 
-    # load dataset from path
+    # load full dataset from path
     dataset = image_dataset_from_directory(
         path,
         labels='inferred',
@@ -111,11 +111,60 @@ def number_img_per_class(path):
     return nb_img_per_class
 
 
+def pick_up_one_painting_per_class(path, img_height=180, img_width=180):
+    """
+    pick-up randomly one image per class and return a dictionnary.
+    key: class(string) - value: image(numpy ndarray)
+    The database must be divided into folders (one folder per class).
+    arguments:
+    * path: path of the dataset (by default: current path)
+    * image size: img_height and img_width. By default 180 for both
+    """
+    # random seed value for image_dataset_from_directory
+    random.seed()
+    seed = random.randint(0,100)
+
+    # load full dataset from path
+    dataset = image_dataset_from_directory(
+        path,
+        labels='inferred',
+        label_mode='categorical',
+        batch_size=1,
+        seed = seed,
+        image_size = (img_height, img_width))
+
+    # dict of class names and corresponding vectors
+    class_names_dict = classes_names_to_dict(dataset)
+
+    # intitate a dictionnary: key = artistic mvt, value = list of paintings
+    paintings_per_class = {c: [] for c in dataset.class_names}
+
+    # iterate the dataset and choose the first encountered painting, for each class
+    # the dataset has been load randomly already
+    for cl in dataset.class_names:
+        for painting, cla in dataset.as_numpy_iterator():
+            if cl == give_class_name(cla[0], class_names_dict):
+                paintings_per_class[give_class_name(cla[0], class_names_dict)] = painting[0]
+                break
+    return paintings_per_class
+
+
 if __name__ == '__main__':
 
-    #testing number_img_per_class
+    #testing pick_up_one_painting_per_class
     path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
-    print(number_img_per_class(path))
+    imgs = pick_up_one_painting_per_class(path)
+    figure, axs = plt.subplots(1, 6, figsize=(20,20))
+    i = 0
+    for cl in imgs:
+        axs[i].imshow(imgs[cl]/255)
+        axs[i].set_title(cl)
+        i += 1
+    plt.show()
+
+    #testing number_img_per_class
+    #path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
+    #print(number_img_per_class(path))
 
     #Uncomment for testing random_painting
     #path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"

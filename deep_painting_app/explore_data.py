@@ -1,3 +1,14 @@
+
+
+#Deep painting app
+#Explore processing
+
+#display_paintings_and_classes(dataset, n=1)
+#random_painting(path, img_height=180, img_width=180)
+#number_img_per_class
+#pick_up_one_painting_per_class
+
+
 import math
 import random
 import matplotlib.pyplot as plt

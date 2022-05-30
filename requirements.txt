@@ -65,5 +65,16 @@ webencodings==0.5.1
 widgetsnbextension==3.6.0
 zipp==3.8.0
 numpy
+setuptools
+wheel
+termcolor>=1.1.0
+pandas
+streamlit
 tensorflow
 matplotlib
+fastapi
+pillow
+pytz
+uvicorn
+joblib
+python-multipart

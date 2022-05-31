@@ -72,6 +72,10 @@ pandas
 streamlit
 tensorflow
 matplotlib
+streamlit
+base64
+re
+requests
 fastapi
 pillow
 pytz

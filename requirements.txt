@@ -67,3 +67,8 @@ zipp==3.8.0
 numpy
 tensorflow
 matplotlib
+streamlit
+base64
+re
+requests
+PIL

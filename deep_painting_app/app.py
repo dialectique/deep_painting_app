@@ -1,10 +1,7 @@
 #Import Libraries
-from re import sub
-from turtle import color
 import streamlit as st
 from PIL import Image
 import matplotlib.pyplot as plt
-import os
 from utils import head, set_bg, equal_text, body, example, about
 from deep_painting_app.explore_data import random_painting, pick_up_one_painting_per_class
 import requests

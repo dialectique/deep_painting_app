@@ -2,6 +2,7 @@
 import streamlit as st
 import re
 import base64
+import pandas as pd
 
 #Sets title and the body
 def head():
@@ -71,7 +72,10 @@ def explanation_of_movements():
 #Transforms " 'highRenaiss' to 'High Renaiss' "
 def equal_text(text):
     res = [re.sub(r"(\w)([A-Z])", r"\1 \2", text)]
-    return res[0].title()
+    if res[0].isalpha() == True:
+        return res[0].title()
+    else:
+        return res[0]
 
 #Sets background
 @st.cache(allow_output_mutation=True)
@@ -91,3 +95,10 @@ def set_bg(png_file):
         </style>
     """ % bin_str
     st.markdown(page_bg_img, unsafe_allow_html=True)
+
+def transform_output(api_call):
+    api_call.pop('movement')
+    api_call.pop('confidence')
+    api_df = pd.DataFrame(list(api_call.items()), columns=['Movement', 'Confidence']).sort_values(by='Confidence', ascending=False)
+    api_df['Confidence'] = api_df['Confidence'].apply(lambda x: round(x*100, 2))
+    return api_df

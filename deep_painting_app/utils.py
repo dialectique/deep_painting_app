@@ -31,6 +31,7 @@ def explanation_of_movements():
                 1520 with the death of Raphael, \
                 although some say the High Renaissance ended about 1525, or in 1527 with the Sack of Rome by the army of Charles V, Holy Roman Emperor, or about 1530 \
                 The best-known exponents of painting, sculpture and architecture of the High Renaissance include Leonardo da Vinci, Michelangelo, Raphael, and Bramante.')
+        st.write('Further Reading : [High Renaissance](https://en.wikipedia.org/wiki/High_Renaissance)')
 
     if mov == 'Impressionism' :
         st.write('Impressionism is a 19th-century art movement characterized by relatively small, thin, yet visible brush strokes, \
@@ -38,17 +39,20 @@ def explanation_of_movements():
                 subject matter, unusual visual angles, and inclusion of movement as a crucial element of human perception and \
                 experience. Impressionism originated with a group of Paris-based artists whose independent exhibitions brought \
                 them to prominence during the 1870s and 1880s.')
+        st.write('Further Reading : [Impressionism](https://en.wikipedia.org/wiki/Impressionism)')
     if mov == 'Northern Renaissance':
         st.write('The Northern Renaissance was the Renaissance that occurred in Europe north of the Alps. From \
                 the last years of the 15th century, its Renaissance spread around Europe. Called the Northern Renaissance because \
                 it occurred north of the Italian Renaissance, this period became the German, French, English, Low Countries, Polish Renaissances and in \
                 turn other national and localized movements, each with different attributes.')
+        st.write('Further Reading : [Northern Renaissance](https://en.wikipedia.org/wiki/Northern_Renaissance)')
     if mov == 'Post Impressionism' :
         st.write("Post-Impressionism was a predominantly French art movement that developed roughly between 1886 and 1905, from the last Impressionist \
                 exhibition to the birth of Fauvism. Post-Impressionism emerged as a reaction against Impressionists' concern for the naturalistic depiction of  \
                 light and colour. Its broad emphasis on abstract qualities or symbolic content means Post-Impressionism encompasses Les Nabis, Neo-Impressionism, Symbolism, Cloisonnism, Pont-Aven School, as well \
                 as Synthetism, along with some later Impressionists' work. The movements principal artists were \
                 Paul Cézanne (known as the father of Post-Impressionism), Paul Gauguin, Vincent van Gogh and Georges Seurat.")
+        st.write('Further Reading : [Post Impressionism](https://en.wikipedia.org/wiki/Post-Impressionism)')
 
     if mov == 'Rococo':
         st.write("Rococo, less commonly Roccoco or Late Baroque, is an exceptionally ornamental and theatrical style of architecture, art and decoration which \
@@ -56,11 +60,13 @@ def explanation_of_movements():
                 motion and drama. It is often described as the final expression of the Baroque movement \
                 The style began in France in the 1730s as a reaction against the more formal and geometric Louis XIV style. \
                 It soon spread to other parts of Europe, particularly northern Italy, Austria, southern Germany, Central Europe and Russia")
+        st.write('Further Reading : [Rococo](https://en.wikipedia.org/wiki/Rococo)')
 
     if mov == 'Ukiyo-e':
         st.write('Ukiyo-e is a genre of Japanese art which flourished from the 17th through 19th centuries. Its artists produced woodblock prints \
                 and paintings of such subjects as female beauties; kabuki actors and sumo wrestlers; scenes from history and folk tales; travel scenes and landscapes; flora \
                 and fauna; and erotica. The term Ukiyo-e (浮世絵) translates as "picture[s] of the floating world".')
+        st.write('Further Reading : [Ukiyo-e](https://en.wikipedia.org/wiki/Ukiyo-e)')
 
 #Transforms " 'highRenaiss' to 'High Renaiss' "
 def equal_text(text):

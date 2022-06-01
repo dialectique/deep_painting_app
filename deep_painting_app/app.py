@@ -2,11 +2,11 @@
 import streamlit as st
 from PIL import Image
 import matplotlib.pyplot as plt
-from utils import head, set_bg, equal_text, body, example, about
+from utils import head, set_bg, equal_text, body, example, about, explanation_of_movements
 from deep_painting_app.explore_data import random_painting, pick_up_one_painting_per_class
 import requests
 
-
+path = 'raw_data/examples'
 #Opens and displays the image
 def get_opened_image(image):
     return Image.open(image)
@@ -21,16 +21,20 @@ head()
 #Shows examples of images for each class
 example()
 
-path = 'data/examples'
-imgs = pick_up_one_painting_per_class(path)
+if 'main_random_images' not in st.session_state:
+    st.session_state['main_random_images'] = pick_up_one_painting_per_class(path)
+    print("Init")
+
 figure, axs = plt.subplots(1, 6, figsize=(20,20))
 i = 0
-for cl in imgs:
-    axs[i].imshow(imgs[cl]/255)
+for cl in  st.session_state['main_random_images']:
+    axs[i].imshow(st.session_state['main_random_images'][cl]/255)
     axs[i].set_title(equal_text(cl))
     axs[i].set_axis_off()
     i += 1
 st.pyplot(figure)
+explanation_of_movements()
+
 
 #Body
 body()
@@ -56,12 +60,12 @@ if image_file:
 
 
 #THE GUESSING GAME
-if 'random_image' not in st.session_state:
-    st.session_state['random_image'] = random_painting(path)
+if 'sidebar_random_image' not in st.session_state:
+    st.session_state['sidebar_random_image'] = random_painting(path)
     print("Init")
 
 def form2_callback():
-    st.session_state['random_image'] = random_painting(path)
+    st.session_state['sidebar_random_image'] = random_painting(path)
     print("callback")
 
 with st.sidebar:
@@ -70,18 +74,18 @@ with st.sidebar:
 
     st.title('Guess the Movement')
     fig, ax = plt.subplots()
-    ax.imshow(st.session_state['random_image'][0]/255)
+    ax.imshow(st.session_state['sidebar_random_image'][0]/255)
     ax.set_axis_off()
     st.pyplot(fig)
 
-    label = st.session_state['random_image'][1]
+    label = st.session_state['sidebar_random_image'][1]
     label = equal_text(label)
 
 
     with st.form(key ='Form1'):
         movement = st.radio("What do you think?",
-                    ('High Renaiss', 'Impress', 'Northern Renaiss',
-                     'Post Impress', 'Rococo', 'Ukiyo'))
+                    ('High Renaissance', 'Impressionism', 'Northern Renaissance',
+                     'Post Impressionism', 'Rococo', 'Ukiyo-e'))
 
         submitted = st.form_submit_button(label = 'Submit')
 

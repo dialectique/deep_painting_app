@@ -2,9 +2,13 @@
 import streamlit as st
 from PIL import Image
 import matplotlib.pyplot as plt
-from utils import head, set_bg, equal_text, body, example, about, explanation_of_movements
+from utils import head, set_bg, equal_text, body, example, about, explanation_of_movements, transform_output
 from deep_painting_app.explore_data import random_painting, pick_up_one_painting_per_class
 import requests
+import random
+import math
+import numpy as np
+import plotly.express as px
 
 path = 'raw_data/examples'
 #Opens and displays the image
@@ -33,11 +37,13 @@ for cl in  st.session_state['main_random_images']:
     axs[i].set_axis_off()
     i += 1
 st.pyplot(figure)
-explanation_of_movements()
 
+#Short explanations for movements
+explanation_of_movements()
 
 #Body
 body()
+
 #Uploads the image file
 image_file = st.file_uploader('Upload an image', type = ['png', 'jpg',
                                                          'jpeg', 'pdf'])
@@ -45,18 +51,22 @@ image_file = st.file_uploader('Upload an image', type = ['png', 'jpg',
 deep_painting_url = 'https://deeppainting3-ynhfw4pdza-an.a.run.app/predict/image'
 
 if image_file:
-    st.markdown(f'<h2 style="font-size:22px;color:black">{"Results"}</h2>',
+    st.markdown(f'<h2 style="font-size:22px;color:black;margin-bottom:-35px">{"Results"}</h2>',
                 unsafe_allow_html=True)
     r = requests.post(url = deep_painting_url,files={'file':image_file})
     predicted_movement = r.json()['movement']
     predicted_probabilty = r.json()['confidence']
-    st.write(f'The Deep Painting App classifies this image as **{predicted_movement}** with **{predicted_probabilty}%** probability')
+
+    st.markdown(f'<h2 style="font-size:22px;color:black;margin-bottom:-35px">{f"The Deep Painting App classifies this image as {predicted_movement} ."}</h2>',
+                unsafe_allow_html=True)
+    api_df = transform_output(r.json())
+    fig = px.bar(api_df, x='Confidence', y='Movement',orientation='h', color = 'Movement')
+    fig.update_layout(showlegend=False)
+    st.plotly_chart(fig)
 
     image = get_opened_image(image_file)
     with st.expander("Selected Image", expanded = True):
         st.image(image, use_column_width = True)
-
-
 
 
 #THE GUESSING GAME
@@ -69,7 +79,7 @@ def form2_callback():
     print("callback")
 
 with st.sidebar:
-    if st.button('About'): #About section
+    with st.expander('About'): #About section
         about()
 
     st.title('Guess the Movement')
@@ -95,5 +105,4 @@ with st.sidebar:
         else:
             st.write(f'Ooops! It was {label} .')
 
-        #with st.form(key = 'Form2'):
         btn = st.button("Next", on_click= form2_callback)

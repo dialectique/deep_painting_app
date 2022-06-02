@@ -7,15 +7,15 @@ import pandas as pd
 #Sets title and the body
 def head():
 
-    st.markdown(f'<h1 style="text-align:center;color:black;margin-bottom:-30px;margin-top: -10px">{"Welcome To The Deep Painting App"}</h1>',
+    st.markdown(f'<h1 style="margin-bottom:-10px;margin-top:-20px">{"Welcome To The Deep Painting App"}</h1>',
                 unsafe_allow_html=True)
 
 def body():
-    st.markdown(f'<h2 style="text-align:center;color:black;margin-bottom:-25px;margin-top: 7px; font-size:21px;font-weight:bolder">{"Upload your image to predict the artistic movement "}</h2>',
+    st.markdown(f'<h2 style="text-align:center;margin-bottom:-25px;margin-top: 7px; font-size:21px;font-weight:bolder">{"Upload your image to predict the artistic movement "}</h2>',
                 unsafe_allow_html=True)
 
 def example():
-    st.markdown(f'<h2 style="text-align:center;color:black;margin-bottom:-25px;margin-top: 7px; font-size:23px;font-weight:bolder">{"Image examples from six different artistic movements"}</h2>',
+    st.markdown(f'<h2 style="margin-bottom:-25px;margin-top: 7px; font-size:23px;font-weight:bolder">{"Image examples from six different artistic movements"}</h2>',
                 unsafe_allow_html=True)
 
 def about():

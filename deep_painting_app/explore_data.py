@@ -8,12 +8,14 @@
 #number_img_per_class
 #pick_up_one_painting_per_class
 
-
+import os
 import math
+import numpy as np
+from PIL import Image
 import random
 import matplotlib.pyplot as plt
-from deep_painting_app.data_processing import load_and_divide_dataset, classes_names_to_dict, give_class_name
-from tensorflow.keras.preprocessing import image_dataset_from_directory
+#from deep_painting_app.data_processing import load_and_divide_dataset, classes_names_to_dict, give_class_name
+#from tensorflow.keras.preprocessing import image_dataset_from_directory
 
 
 def display_paintings_and_classes(dataset, n=1):
@@ -60,118 +62,69 @@ def display_paintings_and_classes(dataset, n=1):
     plt.show()
 
 
-def random_painting(path, img_height=180, img_width=180):
-    """
-    return a tuple from a dataset of images: a random image(numpy ndarray) and its class(string)
-    The database must be divided into folders (one folder per class).
-    arguments:
-    * path: path of the dataset (by default: current path)
-    * image size: img_height and img_width. By default 180 for both
-    """
-
-    # raise an error if path is not a string
-    if not type(path) is str:
-        raise TypeError("path must be a string")
-
-    # random seed value for image_dataset_from_directory
-    random.seed()
-    seed = random.randint(0,100)
-
-    # load dataset from path
-    dataset = image_dataset_from_directory(
-        path,
-        labels='inferred',
-        label_mode='categorical',
-        shuffle = True,
-        seed = seed,
-        image_size = (img_height, img_width),
-        color_mode='rgb',
-        batch_size=1)
-
-    #iterates through dataset, set one painting and its class, randomly stop
-    class_names_dict = classes_names_to_dict(dataset)
-    for x, y in dataset.as_numpy_iterator():
-        painting, painting_class = x[0], give_class_name(y[0], class_names_dict)
-        if random.randint(0,1000) > 700:
-            break
-
-    return painting, painting_class
-
 def number_img_per_class(path):
     """
     return a dictionnary (keys: class - values: number of images)
-    argument: path of the dataset (by default: current path)
+    argument: path of the dataset
     The database must be divided into folders (one folder per class)
     """
-
-    # load full dataset from path
-    dataset = image_dataset_from_directory(
-        path,
-        labels='inferred',
-        label_mode='categorical',
-        batch_size=1)
-
-    # set a dictionnary with the classes of the dataset
-    nb_img_per_class = {c: 0 for c in dataset.class_names}
-
-    # iterating the dataset and count images for each class
-    class_names_dict = classes_names_to_dict(dataset)
-    for x, y in dataset.as_numpy_iterator():
-        nb_img_per_class[give_class_name(y[0], class_names_dict)] += 1
-
+    class_list = os.listdir(path)
+    dict_class_path = {cl : path +"/"+cl for cl in class_list}
+    nb_img_per_class = {cl : len(os.listdir(dict_class_path[cl])) for cl in class_list}
     return nb_img_per_class
 
 
-def pick_up_one_painting_per_class(path, img_height=180, img_width=180):
+def pick_up_one_painting_per_class(path):
     """
     pick-up randomly one image per class and return a dictionnary.
-    key: class(string) - value: image(numpy ndarray)
+    key: class(string) - value: image path
     The database must be divided into folders (one folder per class).
     arguments:
     * path: path of the dataset (by default: current path)
-    * image size: img_height and img_width. By default 180 for both
     """
-    # random seed value for image_dataset_from_directory
-    random.seed()
-    seed = random.randint(0,100)
+    class_list = os.listdir(path)
+    dict_class_path = {cl : path +"/"+cl for cl in class_list}
+    dict_random_img_path = {cl: dict_class_path[cl]+"/"+random.choice(os.listdir(dict_class_path[cl])) for cl in class_list}
+    one_painting_per_class = {cl : dict_random_img_path[cl] for cl in class_list}
+    return one_painting_per_class
 
-    # load full dataset from path
-    dataset = image_dataset_from_directory(
-        path,
-        labels='inferred',
-        label_mode='categorical',
-        batch_size=1,
-        seed = seed,
-        image_size = (img_height, img_width))
 
-    # dict of class names and corresponding vectors
-    class_names_dict = classes_names_to_dict(dataset)
-
-    # intitate a dictionnary: key = artistic mvt, value = list of paintings
-    paintings_per_class = {c: [] for c in dataset.class_names}
-
-    # iterate the dataset and choose the first encountered painting, for each class
-    # the dataset has been load randomly already
-    for cl in dataset.class_names:
-        for painting, cla in dataset.as_numpy_iterator():
-            if cl == give_class_name(cla[0], class_names_dict):
-                paintings_per_class[give_class_name(cla[0], class_names_dict)] = painting[0]
-                break
-    return paintings_per_class
+def random_painting(path):
+    """
+    return a tuple from a dataset of images: a random image(a path) and its class(string)
+    The database must be divided into folders (one folder per class).
+    arguments:
+    * path: path of the dataset
+    """
+    one_painting_per_class = pick_up_one_painting_per_class(path)
+    random_class = random.choice(list(one_painting_per_class.keys()))
+    return one_painting_per_class[random_class], random_class
 
 
 if __name__ == '__main__':
 
-    #testing pick_up_one_painting_per_class
+    #testing updated pick_up_one_painting_per_class
     path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
-    imgs = pick_up_one_painting_per_class(path)
-    figure, axs = plt.subplots(1, 6, figsize=(20,20))
-    i = 0
-    for cl in imgs:
-        axs[i].imshow(imgs[cl]/255)
-        axs[i].set_title(cl)
-        i += 1
-    plt.show()
+    a = pick_up_one_painting_per_class(path)
+    b = random_painting(path)
+    c = number_img_per_class(path)
+    print("pick_up_one_painting_per_class")
+    print(a)
+    print("random_painting")
+    print(b)
+    print("number_img_per_class")
+    print(c)
+
+    #testing pick_up_one_painting_per_class
+    #path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"
+    #imgs = pick_up_one_painting_per_class(path)
+    #figure, axs = plt.subplots(1, 6, figsize=(20,20))
+    #i = 0
+    #for cl in imgs:
+    #    axs[i].imshow(imgs[cl]/255)
+    #    axs[i].set_title(cl)
+    #    i += 1
+    #plt.show()
 
     #testing number_img_per_class
     #path = "../raw_data/Portrait_Painting_Dataset_For_Different_Movements/orgImg"

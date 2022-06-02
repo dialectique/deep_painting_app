@@ -40,7 +40,7 @@ for img in images:
 classes = [cl for cl in one_painting_per_class.keys()]
 
 #display the images and class
-st.image(images, width=200, caption=classes)
+st.image(images, width=233, caption=classes)
 
 
 #Short explanations for movements
@@ -64,13 +64,16 @@ if image_file:
         st.image(image, use_column_width = True)
     st.markdown(f'<h2 style="font-size:22px;margin-bottom:-35px">{"Results"}</h2>',
                 unsafe_allow_html=True)
-    st.markdown(f'<h2 style="font-size:22px;margin-bottom:-35px">{f"The Deep Painting App classifies this image as {predicted_movement} ."}</h2>',
+    st.markdown(f'<h2 style="font-size:22px;margin-bottom:20px">{f"The Deep Painting App classifies this image as {predicted_movement} ."}</h2>',
                 unsafe_allow_html=True)
 
     api_df = transform_output(r.json())
-    fig = px.bar(api_df, x='Confidence', y='Movement',orientation='h', color = 'Movement')
-    fig.update_layout(showlegend=False)
-    st.plotly_chart(fig)
+    with st.expander("Classificatoin Probabilities", expanded = False):
+
+        fig = px.bar(api_df, x='Confidence', y='Movement',orientation='h', color = 'Movement')
+        fig.update_layout(showlegend=False)
+        fig.update_xaxes(visible=False)
+        st.plotly_chart(fig)
 
 #THE GUESSING GAME
 if 'sidebar_random_image' not in st.session_state:
